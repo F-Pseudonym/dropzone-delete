@@ -3,7 +3,7 @@
 # Description: Immediately delete files or folders\n(Icon by zlmimi on openclipart.org)
 # Handles: Files
 # Creator: Florian Scheuer
-# URL: http://florian-scheuer.de
+# URL: https://github.com/F-Pseudonym/dropzone-delete
 # Events: Dragged
 # SkipConfig: Yes
 # RunsSandboxed: No
