@@ -7,7 +7,7 @@
 # Events: Dragged
 # SkipConfig: Yes
 # RunsSandboxed: No
-# Version: 1.0
+# Version: 1.1
 # MinDropzoneVersion: 3.0
 
 require 'fileutils'
@@ -22,9 +22,26 @@ def dragged
   else
     question = "#{$items.count} objects"
   end
+
+  # pashua config string
+  config = <<-EOS
   
-  output = $dz.cocoa_dialog("yesno-msgbox --no-cancel --text 'Permanently delete #{question}?'")
-  if output == "1\n"
+  # Set window title
+  *.title = Delete
+  # question
+  txt.type = text
+  txt.default = Permanently delete #{question}?
+  txt.tooltip = All items will be permanently deleted.
+  # buttons
+  cb.type = cancelbutton
+  cb.tooltip = Cancel
+  db.type = defaultbutton
+  db.tooltip = Ok
+  
+  EOS
+  
+  res = pashua_run(config)
+  if res["db"] == "1"
     # YES
     $items.each do |item|
       begin
@@ -40,11 +57,13 @@ def dragged
     $dz.finish("Success!")    
     
   else
-    # NO
-    $dz.finish("Canceled")
+    # ensure no
+    if res["cb"] == "1"
+      # NO
+      $dz.finish("Canceled")
+    end
   end
 
   $dz.url false
   
 end
-
